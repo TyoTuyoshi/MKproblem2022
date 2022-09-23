@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import sys,glob,pathlib,os,time,wave,soundfile
 
 a = 0
+b = 1
 #音声編集のクラス
 #SHIFT_WAVFILEメソッド
 #引数(AudioSegment wav,int millsecond)
