@@ -37,7 +37,7 @@ layout = [[sg.Text("言語選択",text_color = 'black'),sg.Combo(('日本語','�
           [sg.Text("開始時間    ",text_color = 'black'),sg.Slider(range=(1,3000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 's')],
           [sg.Text("終了時間    ",text_color = 'black'),sg.Slider(range=(5000,8000),default_value =5000,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'e')],
           [sg.Text("ずれ　　    ",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'pos')],
-          [sg.Button(("登録"),key = 'rgs')],
+          [sg.Button(("登録"),key = 'rgs'),sg.Button(("一部再生"), key = 'play')],
           #[sg.Text("最大値",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'max')],
           #[sg.Text("最小値",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'min')],
           [sg.Button(("実行"),key = 'go')]]
@@ -63,6 +63,8 @@ while True:
         window['s'].update("")
         window['e'].update("")
         window['pos'].update("")
+    if event == 'play':
+        play(sourceAudio[i-1])
     if event == 'go':
         break
 window.close()
