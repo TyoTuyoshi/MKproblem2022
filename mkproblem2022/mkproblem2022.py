@@ -28,6 +28,7 @@ def SHIFT_WAVFILE(wav,st,en):
 files = glob.glob("C:/Users/atala/OneDrive/デスクトップ/JKspeech/*")
 pos = []
 sourceAudio = []
+pops = []
 i = 0
 #画面作成
 #最大値と最小値は値要変更
@@ -36,8 +37,9 @@ layout = [[sg.Text("言語選択",text_color = 'black'),sg.Combo(('日本語','�
           [sg.Text("ファイルNo",text_color = 'black'),sg.InputText('',text_color = 'black',key = 'num')],
           [sg.Text("開始時間    ",text_color = 'black'),sg.Slider(range=(1,3000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 's')],
           [sg.Text("終了時間    ",text_color = 'black'),sg.Slider(range=(5000,8000),default_value =5000,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'e')],
-          [sg.Text("ずれ　　    ",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'pos')],
+          #[sg.Text("音声の長さ",text_color = 'black'),sg.Text(int(e) - int(s))],
           [sg.Button(("登録"),key = 'rgs'),sg.Button(("一部再生"), key = 'play')],
+          [sg.Combo((pops),text_color = 'black',size = (30,5),key = 'pop'),sg.Button(("削除"), key = 'del')],
           #[sg.Text("最大値",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'max')],
           #[sg.Text("最小値",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'min')],
           [sg.Button(("実行"),key = 'go')]]
@@ -50,21 +52,26 @@ while True:
     if event == 'rgs':
         move = 1
         num = int(values['num'])
+        pops.append(num)
         if values['lang'] == '日本語':
             num = num + 44
         
         sourceAudio.append(AudioSegment.from_file(files[num]))
+        print(pops)
         start = int(values['s'])
         end = int(values['e'])
-        pos.append(int(values['pos']))
         sourceAudio[i] = SHIFT_WAVFILE(sourceAudio[i],start,end)
         i += 1
         window['num'].update("")
-        window['s'].update("")
-        window['e'].update("")
-        window['pos'].update("")
     if event == 'play':
         play(sourceAudio[i-1])
+    if event == 'del':
+        j = 0
+        print(pops[j])
+        while pops[j] != int(values['pop']):
+            print("1\n")
+            j += 1
+        sourceAudio.pop(j)
     if event == 'go':
         break
 window.close()
