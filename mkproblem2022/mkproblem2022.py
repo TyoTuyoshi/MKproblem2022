@@ -25,7 +25,7 @@ def SHIFT_WAVFILE(wav,st,en):
         wav_data = begin_data + end_data
         return wav_data
 #音源取得
-files = glob.glob("C:/Users/atala/OneDrive/デスクトップ/JKspeech/*")
+files = glob.glob("C:/Users/atala/OneDrive/デスクトップ/プログラム/プロコン/JKspeech/*")
 pos = []
 sourceAudio = []
 pops = []
@@ -38,11 +38,8 @@ layout = [[sg.Text("言語選択",text_color = 'black'),sg.Combo(('日本語','�
           [sg.Text("開始時間    ",text_color = 'black'),sg.Slider(range=(1,3000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 's')],
           [sg.Text("終了時間    ",text_color = 'black'),sg.Slider(range=(5000,8000),default_value =5000,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'e')],
           [sg.Button(("音声ファイルの長さを見る"), key = 'long'),sg.Text('',text_color = 'black',key = 'time')],
-          #[sg.Text("音声の長さ",text_color = 'black'),sg.Text(int(e) - int(s))],
           [sg.Button(("登録"),key = 'rgs'),sg.Button(("一部再生"), key = 'play')],
           [sg.Combo(values = [''],text_color = 'black',size = (30,5),key = 'pop'),sg.Button(("削除"), key = 'del')],
-          #[sg.Text("最大値",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'max')],
-          #[sg.Text("最小値",text_color = 'black'),sg.Slider(range=(1,2000),default_value =1,resolution=10,orientation='h',size=(35, 15),enable_events=True,text_color = 'black',key = 'min')],
           [sg.Button(("実行"),key = 'go')]]
 window = sg.Window('ツール',layout)
 while True:
@@ -54,7 +51,7 @@ while True:
         move = 1
         num = int(values['num'])
         pops.append(num)
-        
+
         if values['lang'] == '日本語':
             num = num + 44
         
@@ -67,7 +64,9 @@ while True:
         window['num'].update("")
         window.FindElement('pop').update(values = pops)
     if event == 'long':
-        window['time'].update(f'{}'.format(e-s))
+        start = int(values['s'])
+        end = int(values['e'])
+        window['time'].update('{}'.format(end - start))
     if event == 'play':
         play(sourceAudio[i-1])
     if event == 'del':
@@ -76,7 +75,10 @@ while True:
         while pops[j] != int(values['pop']):
             print("1\n")
             j += 1
+        pops.pop(j)
+        window.FindElement('pop').update(values = pops)
         sourceAudio.pop(j)
+        i -= 1
     if event == 'go':
         break
 window.close()
